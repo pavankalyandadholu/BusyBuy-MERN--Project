@@ -7,7 +7,6 @@ export const initialStateAsync = createAsyncThunk(
   async (_, { rejectWithValue }) => {
     try {
       const response = await axiosInstance.get("/cart/");
-      console.log(response.data.cartItems,"cart items")
       return response.data.cartItems; // Assume response.data contains the cart items
     } catch (error) {
       return rejectWithValue(
@@ -23,8 +22,6 @@ export const addToCartAsync = createAsyncThunk(
   async (product, { rejectWithValue }) => {
     try {
       const response = await axiosInstance.post("/cart/add", product);
-      console.log(response.data)
-
       return response.data; // Updated cart data
     } catch (error) {
       return rejectWithValue(
@@ -39,11 +36,26 @@ export const removeFromCartAsync = createAsyncThunk(
   "cart/removeFromCart",
   async (productId, { rejectWithValue }) => {
     try {
-      const response = await axiosInstance.post(`/cart/remove/${productId}`);
+      const response = await axiosInstance.post(`/cart/remove`, { productId });
       return response.data; // Updated cart data
     } catch (error) {
       return rejectWithValue(
         error.response?.data?.message || "Failed to remove item from cart."
+      );
+    }
+  }
+);
+
+// Async thunk to reduce quantity of an item in the cart
+export const reduceFromCartAsync = createAsyncThunk(
+  "cart/reduceFromCart",
+  async (productId, { rejectWithValue }) => {
+    try {
+      const response = await axiosInstance.post(`/cart/reduce`, { productId });
+      return response.data; // Updated cart data
+    } catch (error) {
+      return rejectWithValue(
+        error.response?.data?.message || "Failed to reduce item quantity."
       );
     }
   }
@@ -60,18 +72,7 @@ const initialState = {
 const cartSlice = createSlice({
   name: "cart",
   initialState,
-  reducers: {
-    reduceFromCart(state, action) {
-      const productId = action.payload;
-      const existingItem = state.cart.find((item) => item.id === productId);
-
-      if (existingItem && existingItem.quantity > 1) {
-        existingItem.quantity -= 1; // Reduce quantity by 1
-      } else {
-        state.cart = state.cart.filter((item) => item.id !== productId); // Remove item if quantity is 1
-      }
-    },
-  },
+  reducers: {},
   extraReducers: (builder) => {
     builder
       // Handle initial cart state
@@ -95,10 +96,43 @@ const cartSlice = createSlice({
       })
       .addCase(addToCartAsync.fulfilled, (state, action) => {
         state.loading = false;
-        state.cart = action.payload; // Update cart with server response
+        const item = state.cart.find(
+          (item) => item.productDetails.id === action.payload.cart.productDetails.id
+        );
+        if (item) {
+          item.itemQuantity += 1;
+        } else {
+          state.cart.push(action.payload.cart);
+        }
       })
       .addCase(addToCartAsync.rejected, (state, action) => {
         state.loading = false;
+        state.error = action.payload;
+      })
+
+      // Handle reduceFromCart
+      .addCase(reduceFromCartAsync.pending, (state) => {
+        state.loading = true;
+        state.error = null;
+      })
+      .addCase(reduceFromCartAsync.fulfilled, (state, action) => {
+        state.loading = false;
+        const item = state.cart.find(
+          (item) => item.productDetails.id === action.payload.cart.productDetails.id
+        );
+        if (item) {
+          if (item.itemQuantity > 1) {
+            item.itemQuantity -= 1;
+          } else {
+            state.cart = state.cart.filter(
+              (cartItem) => cartItem.productDetails.id !==action.payload.cart.productDetails.id
+            );
+          }
+        }
+      })
+      .addCase(reduceFromCartAsync.rejected, (state, action) => {
+        state.loading = false;
+        console.log("rejected")
         state.error = action.payload;
       })
 
@@ -109,7 +143,9 @@ const cartSlice = createSlice({
       })
       .addCase(removeFromCartAsync.fulfilled, (state, action) => {
         state.loading = false;
-        state.cart = action.payload; // Update cart with server response
+        state.cart = state.cart.filter(
+          (item) => item.productDetails.id !== action.payload.product.productDetails.id
+        );
       })
       .addCase(removeFromCartAsync.rejected, (state, action) => {
         state.loading = false;
@@ -118,6 +154,5 @@ const cartSlice = createSlice({
   },
 });
 
-export const { reduceFromCart } = cartSlice.actions;
 export const cartReducer = cartSlice.reducer;
 export const cartSelector = (state) => state.cartReducer;

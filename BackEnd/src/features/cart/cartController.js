@@ -57,7 +57,7 @@ export const reduceCartQuantityByOne = async (req, res) => {
     } else {
       // Remove the item if the quantity becomes 0
       await Cart.findByIdAndDelete(cartItem._id);
-      return res.status(200).json({ message: 'Item removed from cart' });
+      return res.status(200).json({ message: 'Item removed from cart',cart: cartItem });
     }
   } catch (error) {
     res.status(500).json({ message: error.message });
@@ -75,7 +75,7 @@ export const removeFromCart = async (req, res) => {
       return res.status(404).json({ message: 'Item not found in cart' });
     }
 
-    res.status(200).json({ message: 'Item removed from cart' });
+    res.status(200).json({ message: 'Item removed from cart',product:cartItem });
   } catch (error) {
     res.status(500).json({ message: error.message });
   }

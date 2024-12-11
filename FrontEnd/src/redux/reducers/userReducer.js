@@ -1,21 +1,43 @@
 import { createSlice, createAsyncThunk } from "@reduxjs/toolkit";
-import { userProfiles } from "../../DataBase/UserProfiles";
 import  bcrypt from 'bcryptjs'
 import axiosInstance from "../../axiosInstance/axiosInstance";
-export const loginAsync= createAsyncThunk('user/login',async (credentials,thunkAPI)=>{
+
+export const registerAsync= createAsyncThunk('user/register',async (credentials,{rejectWithValue})=>{
+
+    try{
+        const response= await axiosInstance.post('/users/register',credentials);
+        return response.data
+    }catch(error){
+        return rejectWithValue(error.response?.data?.message || "Registration getting Failed! ")
+    }
+})
+ 
+export const loginAsync= createAsyncThunk('user/login',async (credentials,{rejectWithValue})=>{
     try {
-        const response= await axiosInstance.post('login',credentials);
-        localStorage.setItem('token', response.data.token) // store token in localstorage
-        return response.data; // payload
+        const response= await axiosInstance.post('/users/login',credentials);
+        localStorage.setItem('token', response.data.token); // Store token in local storage
+        return response.data; // Payload
+
+        
         
     } catch (error) {
-            thunkAPI.rejectWithValue(error.response.data.message || "Login Failed.")
+       
+      return  rejectWithValue(error.response?.data?.message || "Login Failed.")
     }
 })
 
 
 
-const initialState= {users:[...userProfiles],isLoggedIn:null}
+const initialState= 
+{
+    user:null,
+    token:localStorage.getItem('token') || null,
+    loading:false,
+    error:null,
+    registrationSuccess: false,
+
+
+}
 const userSlice = createSlice({
     name:'user',
     initialState,
@@ -28,15 +50,10 @@ const userSlice = createSlice({
     user.orders=[];
     state.users.push(user);
         },
-        loginUser:(state,action)=>{
-            const isUserExist= state.users.find(u=>{
-                return u.email==action.payload.email});
-    if(isUserExist){
-        state.isLoggedIn=isUserExist
-    }
-        },
         logoutUser:(state)=>{
-            state.isLoggedIn=null;
+            state.user=null;
+            state.token=null;
+            localStorage.removeItem('token');
         },
         addtoCart:(state,action)=>{
             if(state.isLoggedIn){
@@ -98,6 +115,38 @@ const userSlice = createSlice({
               state.isLoggedIn=state.users[index]
             }
         }
+    },
+    extraReducers:(builder)=>{
+        // For Logging
+        builder.addCase(loginAsync.pending,(state)=>{
+            state.loading=true;
+            state.error=null;
+        })
+        builder.addCase(loginAsync.fulfilled,(state,action)=>{
+            state.loading=false;
+          state.token=  action.payload.token;
+          state.user=action.payload
+        })
+        builder.addCase(loginAsync.rejected,(state,action)=>{
+            console.log("rejected.")
+            state.loading=false;
+            state.error=action.payload
+        })
+        //For Registration
+        builder.addCase(registerAsync.pending,(state)=>{
+            state.loading=true;
+            state.error=null;
+            state.registrationSuccess = false;
+        })
+        builder.addCase(registerAsync.fulfilled,(state)=>{
+            state.loading=false;
+            state.registrationSuccess = true;
+        })
+        builder.addCase(registerAsync.rejected,(state,action)=>{
+            console.log("rejected.")
+            state.loading=false;
+            state.error=action.payload
+        })
     }
 
 })

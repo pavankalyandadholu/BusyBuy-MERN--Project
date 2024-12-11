@@ -1,5 +1,6 @@
 import express from 'express';
 import dotenv from 'dotenv';
+import cors from 'cors'
 import connectDB from './config/db.js';
 import swaggerUi from 'swagger-ui-express'
 import userRoutes from './features/users/userRoutes.js';
@@ -11,8 +12,8 @@ dotenv.config();
 connectDB();
 
 const app = express();
+app.use(cors())
 app.use(express.json());
-
 // Feature routes
 app.use('/api-docs', swaggerUi.serve, swaggerUi.setup(swaggerDefinition));
 
@@ -21,8 +22,11 @@ app.use('/api/cart', cartRoutes);
 app.use('/api/orders', orderRoutes);
 // app.use('/api/products', productRoutes);
 // app.use('/api/orders', orderRoutes);
-app.use('/',(req,res)=>{
-    res.status(200).send("Hello world")
+app.use((req,res)=>{
+    res.status(400).send("Url does not exist! ")
+})
+app.use((err,req,res,next)=>{
+    res.status(500).send('Something went Wrong !')
 })
 
 export default app;

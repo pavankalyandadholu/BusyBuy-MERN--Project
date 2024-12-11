@@ -2,7 +2,6 @@ import express from 'express';
 import { registerUser, loginUser } from './userController.js';
 
 const router = express.Router();
-
 // Route for registration
 router.post('/register', registerUser);
 

@@ -25,6 +25,7 @@ export const loginUser = async (req, res) => {
   try {
     // Check if the user exists
     const user = await User.findOne({ email });
+    
     if (!user) {
       return res.status(401).json({ message: 'Invalid email or password' });
     }
@@ -34,7 +35,6 @@ export const loginUser = async (req, res) => {
     if (!isMatch) {
       return res.status(401).json({ message: 'Invalid email or password' });
     }
-
     // Generate a token and send response
     res.status(200).json({
       id: user._id,
@@ -42,6 +42,7 @@ export const loginUser = async (req, res) => {
       token: generateToken(user._id),
     });
   } catch (error) {
+
     res.status(500).json({ message: error.message });
   }
 };

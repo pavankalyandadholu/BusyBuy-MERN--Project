@@ -2,7 +2,10 @@ import  { useState } from 'react'
 import { Link } from 'react-router-dom'
 import { useDispatch } from 'react-redux';
 import { userActions } from '../redux/reducers/userReducer';
-import { notify,NotificationComponent } from '../Components/NotificationComponent';
+import { notify} from '../Components/NotificationComponent';
+
+import { loginAsync } from '../redux/reducers/userReducer';
+
 const SignIn = () => {
     const dispatch= useDispatch();
     const [userData , setUserData ] = useState({email:"one@gmail.com",password:"one@gmail.com"})
@@ -10,6 +13,7 @@ const SignIn = () => {
     function handlesignIn(e){
         e.preventDefault()
         dispatch(userActions.loginUser(userData))
+        dispatch(loginAsync(userData))
         notify('sign in successful!')
         setUserData({email:"",password:""})     
     }
@@ -22,7 +26,6 @@ const SignIn = () => {
 
   return (
     <div className='top-6'>
-        <NotificationComponent/>
     <div className='w-full h-[70vh] flex items-center justify-center'>
         <form onSubmit={handlesignIn}  className=' flex items-center justify-center gap-6 flex-col mt-6 border-2 border-black rounded-md  p-12 bg-blue-100'>
             <h1 className=' text-3xl font-extrabold '>Sign In</h1>

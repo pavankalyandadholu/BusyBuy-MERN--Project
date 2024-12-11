@@ -1,6 +1,19 @@
-import { createSlice } from "@reduxjs/toolkit";
+import { createSlice, createAsyncThunk } from "@reduxjs/toolkit";
 import { userProfiles } from "../../DataBase/UserProfiles";
 import  bcrypt from 'bcryptjs'
+import axiosInstance from "../../axiosInstance/axiosInstance";
+export const loginAsync= createAsyncThunk('user/login',async (credentials,thunkAPI)=>{
+    try {
+        const response= await axiosInstance.post('login',credentials);
+        localStorage.setItem('token', response.data.token) // store token in localstorage
+        return response.data; // payload
+        
+    } catch (error) {
+            thunkAPI.rejectWithValue(error.response.data.message || "Login Failed.")
+    }
+})
+
+
 
 const initialState= {users:[...userProfiles],isLoggedIn:null}
 const userSlice = createSlice({

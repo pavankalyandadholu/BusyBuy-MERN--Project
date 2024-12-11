@@ -1,7 +1,7 @@
 import  { useState } from 'react'
 import {  useDispatch } from 'react-redux';
 import { userActions } from '../redux/reducers/userReducer';
-import {NotificationComponent,notify} from '../Components/NotificationComponent';
+import {notify} from '../Components/NotificationComponent';
 const SignUp = () => {
     const dispatch= useDispatch();
     const [userData , setUserData ] = useState({name:"",email:"",password:""})
@@ -22,7 +22,6 @@ const SignUp = () => {
 
   return (
     <div className='top-6'>
-        <NotificationComponent  />
     <div className='w-full h-[70vh] flex items-center justify-center'>
         <form onSubmit={handlesignUp}  className=' flex items-center justify-center gap-6 flex-col mt-6 border-2 border-black rounded-md  p-12 bg-blue-100'>
             <h1 className=' text-3xl font-extrabold '>Sign Up</h1>

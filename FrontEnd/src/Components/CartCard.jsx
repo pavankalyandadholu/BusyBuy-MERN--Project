@@ -1,11 +1,10 @@
 import { useDispatch } from 'react-redux';
 import { userActions } from '../redux/reducers/userReducer';
-import { NotificationComponent,notify } from './NotificationComponent';
+import { notify } from './NotificationComponent';
 const CartCard = ({product}) => {
   const dispatch= useDispatch()
     return (
         <div className=' w-80  border-2 rounded-md p-3  text-xl shadow-md'>
-          <NotificationComponent/>
           <div><img className='w-80 object-contain h-80' src={product.image} alt="" /></div>
           <div>
             <h1 className=' text-xl

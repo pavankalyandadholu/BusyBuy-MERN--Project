@@ -1,5 +1,5 @@
 import { useDispatch, useSelector } from 'react-redux';
-import { NotificationComponent,notify } from './NotificationComponent';
+import { notify } from './NotificationComponent';
 import { userSelector ,userActions } from '../redux/reducers/userReducer';
 
 const ProductCard = (props) => {
@@ -22,7 +22,6 @@ const ProductCard = (props) => {
     <>
      
         
-        <NotificationComponent/>
      
     <div className=' w-80  border-2 rounded-md p-3  text-xl shadow-md'>
       <div><img className='w-80 object-contain h-80' src={product.image} alt="" /></div>

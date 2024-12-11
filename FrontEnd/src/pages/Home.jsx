@@ -1,8 +1,9 @@
 
 import AllProductCards from '../Components/AllProductCards';
 import Filters from '../Components/Filters';
+
 const Home = () => {
-  
+ 
   
   return (
     <> 

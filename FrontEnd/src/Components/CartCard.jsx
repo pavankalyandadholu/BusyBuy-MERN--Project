@@ -2,15 +2,16 @@ import { useDispatch } from 'react-redux';
 import { userActions } from '../redux/reducers/userReducer';
 import { notify } from './NotificationComponent';
 const CartCard = ({product}) => {
+  console.log(product,"cart card")
   const dispatch= useDispatch()
     return (
         <div className=' w-80  border-2 rounded-md p-3  text-xl shadow-md'>
-          <div><img className='w-80 object-contain h-80' src={product.image} alt="" /></div>
+          <div><img className='w-80 object-contain h-80' src={product.productDetails.image} alt="" /></div>
           <div>
             <h1 className=' text-xl
-             font-semibold capitalize mt-2'>{product.title.length>27? product.title.slice(0,26)+"...": product.title.slice(0,26)}</h1>
+             font-semibold capitalize mt-2'>{product.productDetails.title.length>27? product.productDetails.title.slice(0,26)+"...": product.productDetails.title.slice(0,26)}</h1>
              <div className='flex justify-between items-center'>
-            <p className='mt-2 font-medium'>&#8377; {Math.floor(product.price*84)}</p>
+            <p className='mt-2 font-medium'>&#8377; {Math.floor(product.productDetails.price*84)}</p>
             <div className=' w-20  flex justify-between items-center px-1 text-2xl'>
             <button onClick={()=>dispatch(userActions.removeFromCart({product}))} className=''>-</button>
             <span className=''>{product.itemsCount}</span>

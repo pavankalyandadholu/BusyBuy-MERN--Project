@@ -1,7 +1,15 @@
+import { useDispatch } from 'react-redux';
+import { initialStateAsync } from '../redux/reducers/cartReducer';
 import AllCartCards from '../Components/AllCartCards'
 import CartTotalAmount from '../Components/CartTotalAmount';
+import { useEffect } from 'react';
 
 const Cart = () => {
+  const dispatch=useDispatch();
+  useEffect(()=>{
+    dispatch(initialStateAsync())
+  },[])
+  
     
   return (
     <>

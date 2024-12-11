@@ -18,7 +18,7 @@ export const getCartItems = async (req, res) => {
 
 // Add a product to the cart
 export const addToCart = async (req, res) => {
-  const {  productDetails } = req.body;
+  const   productDetails  = req.body.product;
   const  userId = req.user._id;
   try {
     // Check if the item already exists in the cart

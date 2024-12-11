@@ -1,14 +1,14 @@
 import CartCard from './CartCard'
-import { useSelector } from 'react-redux';
-import { userSelector } from '../redux/reducers/userReducer';
+import { useSelector, } from 'react-redux';
+import { cartSelector } from '../redux/reducers/cartReducer';
 const AllCartCards = () => {
-    const {isLoggedIn}= useSelector(userSelector);
-    // const profileData= getProfileContextValues();
+  const {cart}= useSelector(cartSelector);
+  console.log("allp orudc",cart.length)
     return (
         <div className=' flex items-center justify-center flex-wrap gap-8 mt-6'>
     
         {
-        isLoggedIn &&  isLoggedIn.cart.map((p,i)=><CartCard key={i} product={p}/>)
+        cart.length >0  &&  cart.map((p,i)=><CartCard key={i} product={p}/>)
       
         }
         </div>

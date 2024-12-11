@@ -1,20 +1,23 @@
-import { useDispatch, useSelector } from 'react-redux';
+import { useDispatch, } from 'react-redux';
 import { notify } from './NotificationComponent';
-import { userSelector ,userActions } from '../redux/reducers/userReducer';
-
+import { addToCartAsync } from '../redux/reducers/cartReducer';
 const ProductCard = (props) => {
   const dispatch= useDispatch();
   const {product}=props;
-  const {isLoggedIn}= useSelector(userSelector);
  
-  function addtoCart(product){
-    if(isLoggedIn){
-      dispatch(userActions.addtoCart({product}))
-      notify('Item add to cart Successfully!')
-    }else{
-      notify("Please login! ")
+ async function addtoCart(product){
     
-  }
+    const result= await dispatch(addToCartAsync({product}));
+    if(addToCartAsync.fulfilled.match(result)){
+
+      notify(result.payload.message || 'Item add to cart Successfully!')
+    }else{
+
+      notify(result.payload.message || "Please login! ")
+    }
+   
+    
+  
 
 
   }

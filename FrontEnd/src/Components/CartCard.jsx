@@ -1,8 +1,6 @@
 import { useDispatch } from 'react-redux';
-import { userActions } from '../redux/reducers/userReducer';
 import { notify } from './NotificationComponent';
 import { addToCartAsync,reduceFromCartAsync, removeFromCartAsync } from '../redux/reducers/cartReducer';
-import { useEffect } from 'react';
 const CartCard = ({product}) => {
  
   const dispatch= useDispatch()

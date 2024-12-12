@@ -3,7 +3,8 @@ const OrdersComponent = ({orders}) => {
     <div className=" flex items-center flex-col justify-center gap-4 mt-6"> 
         <div>
 <h1 className=" text-xl font-medium">
-Ordered On:- {orders.date}
+Ordered On:- {new Date(orders.orderCreatedAt).toLocaleDateString()}
+
 </h1>
         </div>
         <div>
@@ -17,20 +18,21 @@ Ordered On:- {orders.date}
               </tr>
             </thead>
             <tbody>
+              
             { 
-              orders.orders.map((o,i)=>
+              orders.items.map((o,i)=>
                 <tr key={i} className="border-b hover:bg-gray-100">
                 <td className=" px-4 py-3">
-                {o.title.slice(0,20)}
+                {o.productName.slice(0,20)}
                 </td>
                 <td className=" px-4 py-3">
-                ₹ {Math.floor(o.price*84)}
+                ₹ {Math.floor(o.productAmount*84)}
                 </td>
                 <td className=" px-4 py-3">
-                {o.itemsCount}
+                {o.quantity}
                 </td>
                 <td className=" px-4 py-3">
-                ₹ {Math.floor(o.price*o.itemsCount*84)}
+                ₹ {Math.floor(o.totalAmount*84)}
                 </td>
               </tr>
               )

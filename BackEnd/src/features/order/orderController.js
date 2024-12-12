@@ -43,7 +43,10 @@ export const createOrder = async (req, res) => {
 // Get all orders for a specific user
 export const getAllOrdersByUser = async (req, res) => {
   try {
-    const orders = await Order.find({ user: req.user._id }).populate('user', 'email');
+    const orders = await Order.find({ user: req.user._id })
+  .populate('user', 'email')
+  .sort({ createdAt: -1 }); // Sorts by createdAt in descending order
+
 
     if (!orders.length) {
       return res.status(404).json({ message: 'No orders found for this user' });

@@ -1,6 +1,6 @@
 import { createSlice, createAsyncThunk } from "@reduxjs/toolkit";
 import axiosInstance from "../../axiosInstance/axiosInstance";
-
+import { createOrderAsync } from "./orderReducer";
 // Async thunk to fetch initial cart state from the server
 export const initialStateAsync = createAsyncThunk(
   "cart/initialState",
@@ -150,7 +150,13 @@ const cartSlice = createSlice({
       .addCase(removeFromCartAsync.rejected, (state, action) => {
         state.loading = false;
         state.error = action.payload;
-      });
+      })
+
+      // Handle submit Order
+      .addCase(createOrderAsync.fulfilled,(state)=>{
+        state.cart=[]
+      })
+
   },
 });
 

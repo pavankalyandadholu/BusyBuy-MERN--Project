@@ -1,5 +1,6 @@
 import { createSlice, createAsyncThunk } from "@reduxjs/toolkit";
 import axiosInstance from "../../axiosInstance/axiosInstance";
+import { userActions } from "./userReducer";
 const initialState= {
     
     orders:[]
@@ -27,10 +28,15 @@ const orderSlice  = createSlice({
     initialState,
     reducers:{},
     extraReducers:(builder)=>{
+        builder
+        //Handle logout fuctionality
+        .addCase(userActions.logoutUser,(state,action)=>{
+            state.orders=[]
+        })
         //Handle intial state
        
 
-        builder.addCase(initialStateAsync.fulfilled,(state,action)=>{
+        .addCase(initialStateAsync.fulfilled,(state,action)=>{
                  state.orders=action.payload.orders
         })
        

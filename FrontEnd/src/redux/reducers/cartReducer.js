@@ -1,6 +1,7 @@
 import { createSlice, createAsyncThunk } from "@reduxjs/toolkit";
 import axiosInstance from "../../axiosInstance/axiosInstance";
 import { createOrderAsync } from "./orderReducer";
+import { userActions } from "./userReducer";
 // Async thunk to fetch initial cart state from the server
 export const initialStateAsync = createAsyncThunk(
   "cart/initialState",
@@ -75,6 +76,12 @@ const cartSlice = createSlice({
   reducers: {},
   extraReducers: (builder) => {
     builder
+    // Handle Logout Functionality
+    .addCase(userActions.logoutUser,(state,action)=>{
+      state.cart=[];
+      state.loading=false;
+      state.error=false;
+    })
       // Handle initial cart state
       .addCase(initialStateAsync.pending, (state) => {
         state.loading = true;

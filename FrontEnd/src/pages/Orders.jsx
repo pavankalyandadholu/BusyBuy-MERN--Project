@@ -16,7 +16,8 @@ const Orders = () => {
     <div className=" mt-2 py-4">
     <h1 className="text-3xl  font-bold text-center">Your Orders</h1>
     {
-     orders.length>0 && orders.map((o,i)=><OrdersComponent key={i} orders={o}/>) 
+     orders.length>0 ? orders.map((o,i)=><OrdersComponent key={i} orders={o}/>) :
+     <h1 className=" text-3xl text-center mt-16">No orders Present! </h1>
     }
     
   

@@ -12,7 +12,15 @@ dotenv.config();
 connectDB();
 
 const app = express();
-app.use(cors())
+const corsOptions = {
+    origin: process.env.FRONT_END_URL , // Allow only a specific origin
+    methods: ['GET', 'POST', 'PUT', 'DELETE','OPTIONS'], // Allow specific HTTP methods
+    credentials: true, // Allow cookies or other credentials
+  };
+  
+  // Apply CORS middleware with options
+  app.use(cors(corsOptions));
+  
 app.use(express.json());
 // Feature routes
 app.use('/api-docs', swaggerUi.serve, swaggerUi.setup(swaggerDefinition));

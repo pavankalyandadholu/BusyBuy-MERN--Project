@@ -7,7 +7,7 @@ import { loginAsync,userSelector } from '../redux/reducers/userReducer';
 
 const SignIn = () => {
     const dispatch= useDispatch();
-    const [userData , setUserData ] = useState({email:"one@gmail.com",password:"one@gmail.com"});
+    const [userData , setUserData ] = useState({email:"",password:""});
     const {loading} =useSelector(userSelector);
     
    async function handlesignIn(e){

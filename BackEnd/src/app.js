@@ -5,7 +5,6 @@ import connectDB from './config/db.js';
 import swaggerUi from 'swagger-ui-express'
 import userRoutes from './features/users/userRoutes.js';
 import swaggerDefinition from './config/swagger.js';
-// import productRoutes from './features/products/productRoutes.js';
 import cartRoutes from './features/cart/cartRoutes.js'
 import orderRoutes from './features/order/orderRoutes.js'
 dotenv.config();
@@ -13,13 +12,13 @@ connectDB();
 
 const app = express();
 const corsOptions = {
-    origin: process.env.FRONT_END_URL , // Allow only a specific origin
+    origin: [process.env.FRONT_END_URL] , // Allow only a specific origin
     methods: ['GET', 'POST', 'PUT', 'DELETE','OPTIONS'], // Allow specific HTTP methods
     credentials: true, // Allow cookies or other credentials
   };
   
   // Apply CORS middleware with options
-  app.use(cors());
+  app.use(cors(corsOptions));
   
 app.use(express.json());
 // Feature routes

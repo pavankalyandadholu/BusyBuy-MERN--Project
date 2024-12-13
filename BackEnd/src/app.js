@@ -28,8 +28,9 @@ app.use('/api-docs', swaggerUi.serve, swaggerUi.setup(swaggerDefinition));
 app.use('/api/users', userRoutes);
 app.use('/api/cart', cartRoutes);
 app.use('/api/orders', orderRoutes);
-// app.use('/api/products', productRoutes);
-// app.use('/api/orders', orderRoutes);
+app.get('/',(req,res)=>{
+    res.status(200).send("Welcome to backend");
+})
 app.use((req,res)=>{
     res.status(400).send("Url does not exist! ")
 })

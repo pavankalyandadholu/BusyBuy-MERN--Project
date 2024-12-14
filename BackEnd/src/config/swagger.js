@@ -8,7 +8,7 @@ const swaggerDefinition = {
     },
     servers: [
       {
-        url: 'http://localhost:5000/api',
+        url:`${process.env.VERCEL_URL}/api`,
         description: 'Local server',
       },
     ],

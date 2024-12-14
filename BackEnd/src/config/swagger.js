@@ -9,8 +9,8 @@ const swaggerDefinition = {
     },
     servers: [
       {
-        url:`${process.env.VERCEL_URL}/api`,
-        description: 'Local server',
+        url:`https://busy-buy-api.vercel.app/api`,
+        description: 'MY API DOCUMENTATION',
       },
     ],
     components: {

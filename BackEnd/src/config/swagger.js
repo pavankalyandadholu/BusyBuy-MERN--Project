@@ -1,4 +1,5 @@
-// src/config/swagger.js
+import dotenv from 'dotenv';
+dotenv.config();
 const swaggerDefinition = {
     openapi: '3.0.0',
     info: {

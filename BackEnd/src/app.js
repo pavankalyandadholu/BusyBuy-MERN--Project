@@ -9,7 +9,6 @@ import cartRoutes from './features/cart/cartRoutes.js'
 import orderRoutes from './features/order/orderRoutes.js'
 dotenv.config();
 connectDB();
-
 const app = express();
 const corsOptions = {
     origin: [process.env.FRONT_END_URL] , // Allow only a specific origin

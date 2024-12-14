@@ -21,7 +21,9 @@ const corsOptions = {
   
 app.use(express.json());
 // Feature routes
-app.use('/api-docs', swaggerUi.serve, swaggerUi.setup(swaggerDefinition));
+const CSS_URL =
+  "https://cdnjs.cloudflare.com/ajax/libs/swagger-ui/4.1.0/swagger-ui.min.css";
+app.use('/api-docs', swaggerUi.serve, swaggerUi.setup(swaggerDefinition,{ customCssUrl: CSS_URL }));
 
 app.use('/api/users', userRoutes);
 app.use('/api/cart', cartRoutes);
